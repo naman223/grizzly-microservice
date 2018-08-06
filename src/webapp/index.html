@@ -1,0 +1,108 @@
+<!-- Client Side Validations -->
+
+
+<html>
+<head>
+    <style>
+        ul {
+            list-style: none;
+        }
+
+    </style>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>
+        <center>Kafka Service</center>
+    </h1>
+
+    <div class="form-group">
+        <label for="usr">Create New Service Having Name:</label>
+        <input type="text" id="input" class="form-control"/>
+        <br>
+        <label for="type">Service Type:</label>
+        <select class="form-control">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="opel">Opel</option>
+            <option value="audi">Audi</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" id="btn">Add</button>
+    </div>
+    <hr/>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Selected Service Details</div>
+        <div class="panel-body">
+            <ul id="todo"></ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Created Services</div>
+        <div class="panel-body">
+            <ul id="done"></ul>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var input = document.getElementById('input');
+        var btn = document.getElementById('btn');
+        var lists = {
+            todo: document.getElementById('todo'),
+            done: document.getElementById('done')
+        };
+
+        var makeElement = function (str, onCheck) {
+            var el = document.createElement('li');
+            var checkbox = document.createElement('input');
+            var label = document.createElement('span');
+
+            checkbox.type = 'checkbox';
+            label.className = 'text-primary';
+            checkbox.addEventListener('click', onCheck);
+            label.textContent = "	" + str;
+
+            el.appendChild(checkbox);
+            el.appendChild(label);
+
+            return el;
+        };
+
+        var addElement = function (element) {
+            lists.todo.appendChild(element);
+        };
+
+        var onCheck = function (event) {
+            var task = event.target.parentElement;
+            var list = task.parentElement.id;
+
+            lists[list === 'done' ? 'todo' : 'done'].appendChild(task);
+            this.checked = false;
+            input.focus();
+        };
+
+        var onInput = function () {
+            var str = input.value.trim();
+
+            if (str.length > 0) {
+                element = makeElement(str, onCheck);
+                addElement(element);
+
+                input.value = '';
+                input.focus();
+            }
+        };
+
+        btn.addEventListener('click', onInput);
+
+        input.focus();
+    }());
+</script>
+</html>
